@@ -85,7 +85,11 @@
       </section>
 
       <div class="actions">
-        <button type="button" class="btn primary" id="next">New verse</button>
+        <button type="button" class="btn back" id="prev">Previous</button>
+        <button type="button" class="btn primary" id="next">Next verse</button>
+      </div>
+      <div class="actions secondary-actions">
+        <button type="button" class="btn" id="random">Random</button>
         <button type="button" class="btn" id="copy">Copy quote</button>
         <a class="btn" id="tweet" target="_blank" rel="noopener">Share on X</a>
         <button type="button" class="btn" id="link">Copy link</button>
@@ -99,15 +103,18 @@
 
     <script>
       const SITE = "https://chiragmirani.github.io/gita-quotes/";
+      const STORAGE_KEY = "gita.lastVerseId";
       let verses = [];
-      let current = null;
+      let currentIndex = 0;
 
       const elRef = document.getElementById("ref");
       const elQuote = document.getElementById("quote");
       const elSanskrit = document.getElementById("sanskrit");
       const elTranslit = document.getElementById("translit");
       const elCred = document.getElementById("cred");
+      const btnPrev = document.getElementById("prev");
       const btnNext = document.getElementById("next");
+      const btnRandom = document.getElementById("random");
       const btnCopy = document.getElementById("copy");
       const btnLink = document.getElementById("link");
       const aTweet = document.getElementById("tweet");
@@ -119,11 +126,13 @@
         return text.replace(re, "").trim();
       }
 
-      function show(v) {
-        current = v;
+      function show(index) {
+        if (!verses.length) return;
+        currentIndex = ((index % verses.length) + verses.length) % verses.length;
+        const v = verses[currentIndex];
         const ref = "BG " + v.chapter + "." + v.verse;
         const clean = stripPrefix(v.english, v.id);
-        elRef.textContent = ref;
+        elRef.textContent = ref + "  ·  " + (currentIndex + 1) + " of " + verses.length;
         elQuote.textContent = clean;
         elSanskrit.textContent = v.sanskrit || "";
         elTranslit.textContent = v.transliteration || "";
@@ -133,15 +142,11 @@
         aTweet.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweetText) + "&url=" + encodeURIComponent(url);
         history.replaceState(null, "", "?v=" + encodeURIComponent(v.id));
         document.title = "BG " + v.chapter + "." + v.verse + " | Bhagavad Gita Quotes";
+        try { localStorage.setItem(STORAGE_KEY, v.id); } catch (e) {}
       }
 
-      function pickRandom() {
-        if (!verses.length) return null;
-        return verses[Math.floor(Math.random() * verses.length)];
-      }
-
-      function findById(id) {
-        return verses.find(v => v.id === id);
+      function findIndexById(id) {
+        return verses.findIndex(v => v.id === id);
       }
 
       function flashButton(btn, label) {
@@ -150,16 +155,25 @@
         setTimeout(() => { btn.textContent = orig; }, 1400);
       }
 
-      btnNext.addEventListener("click", () => show(pickRandom()));
+      btnNext.addEventListener("click", () => show(currentIndex + 1));
+      btnPrev.addEventListener("click", () => show(currentIndex - 1));
+      btnRandom.addEventListener("click", () => show(Math.floor(Math.random() * verses.length)));
       btnCopy.addEventListener("click", () => {
-        if (!current) return;
-        const text = "\"" + stripPrefix(current.english, current.id) + "\" — Bhagavad Gita " + current.chapter + "." + current.verse;
+        const v = verses[currentIndex];
+        const text = "\"" + stripPrefix(v.english, v.id) + "\" — Bhagavad Gita " + v.chapter + "." + v.verse;
         navigator.clipboard.writeText(text).then(() => flashButton(btnCopy, "Copied"));
       });
       btnLink.addEventListener("click", () => {
-        if (!current) return;
-        const url = SITE + "?v=" + encodeURIComponent(current.id);
+        const v = verses[currentIndex];
+        const url = SITE + "?v=" + encodeURIComponent(v.id);
         navigator.clipboard.writeText(url).then(() => flashButton(btnLink, "Copied"));
+      });
+
+      // Keyboard navigation: arrow keys to advance through the dialogue.
+      document.addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+        if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(currentIndex + 1); }
+        if (e.key === "ArrowLeft") { e.preventDefault(); show(currentIndex - 1); }
       });
 
       fetch("data.json")
@@ -167,8 +181,19 @@
         .then(data => {
           verses = data.verses;
           const params = new URLSearchParams(window.location.search);
-          const want = params.get("v");
-          show((want && findById(want)) || pickRandom());
+          const wantUrl = params.get("v");
+          let saved = null;
+          try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+          // Priority: URL deep link, then saved position, then BG 1.1.
+          let idx = 0;
+          if (wantUrl) {
+            const i = findIndexById(wantUrl);
+            if (i >= 0) idx = i;
+          } else if (saved) {
+            const i = findIndexById(saved);
+            if (i >= 0) idx = i;
+          }
+          show(idx);
         })
         .catch(err => {
           elQuote.textContent = "Could not load verses: " + err;

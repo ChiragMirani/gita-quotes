@@ -156,7 +156,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 28px;
-  padding: 16px 0 80px;
+  padding: 16px 0 12px;
 }
 .btn {
   font: inherit;
@@ -191,7 +191,27 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-weight: 400;
 }
 .btn.primary:hover { background: var(--accent-hover); color: #fff; }
-.btn.primary::after { content: ""; }
+
+.btn.back::after { content: ""; }
+.btn.back::before {
+  content: "‹";
+  display: inline-block;
+  font-size: 20px;
+  line-height: 0.5;
+  transform: translateY(-1px);
+  margin-right: 6px;
+  transition: transform 0.2s ease;
+}
+.btn.back:hover::before { transform: translate(-2px, -1px); }
+
+.secondary-actions {
+  padding-top: 0;
+  padding-bottom: 64px;
+  font-size: 15px;
+  gap: 10px 22px;
+}
+.secondary-actions .btn { font-size: 15px; opacity: 0.85; }
+.secondary-actions .btn:hover { opacity: 1; }
 
 /* ---------- Footer ---------- */
 .foot {
