@@ -1,4 +1,7 @@
-"""Generate favicon, Apple touch icon, and PWA icons for Gita Quotes."""
+"""Generate favicon, Apple touch icon, and PWA icons for Gita Quotes.
+
+Design: warm cream background, saffron Om (ॐ) centered, "GITA" wordmark below.
+"""
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -6,52 +9,64 @@ from PIL import Image, ImageDraw, ImageFont
 
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 
-BG = (26, 17, 8)        # deep brown / sepia
-FG = (243, 234, 212)    # warm off-white
-ACCENT = (232, 149, 86) # saffron / amber
+BG = (250, 244, 232)        # warm cream
+OM_COLOR = (255, 153, 51)   # India saffron
+LABEL_COLOR = (74, 47, 24)  # dark warm brown
 
 
-def find_font(size: int, bold: bool = True) -> ImageFont.FreeTypeFont:
-    candidates = [
-        "C:/Windows/Fonts/arialbd.ttf" if bold else "C:/Windows/Fonts/arial.ttf",
-        "C:/Windows/Fonts/segoeuib.ttf" if bold else "C:/Windows/Fonts/segoeui.ttf",
-        "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    ]
-    for p in candidates:
+def find_font(path_options: list[str], size: int) -> ImageFont.FreeTypeFont:
+    for path in path_options:
         try:
-            return ImageFont.truetype(p, size)
+            return ImageFont.truetype(path, size)
         except Exception:
             continue
     return ImageFont.load_default()
+
+
+def devanagari_font(size: int) -> ImageFont.FreeTypeFont:
+    return find_font([
+        "C:/Windows/Fonts/Nirmala.ttc",
+        "C:/Windows/Fonts/NirmalaB.ttf",
+        "C:/Windows/Fonts/Mangal.ttf",
+        "C:/Windows/Fonts/Aparajita.ttf",
+        "/System/Library/Fonts/Supplemental/Devanagari MT.ttc",
+        "/usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf",
+    ], size)
+
+
+def label_font(size: int) -> ImageFont.FreeTypeFont:
+    return find_font([
+        "C:/Windows/Fonts/arialbd.ttf",
+        "C:/Windows/Fonts/segoeuib.ttf",
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    ], size)
 
 
 def render(size: int) -> Image.Image:
     img = Image.new("RGB", (size, size), BG)
     draw = ImageDraw.Draw(img)
 
-    # Stylized arrow (Arjuna's bow shot) drawn as a clean diagonal with arrowhead.
-    pad = size * 0.18
-    x0, y0 = pad, size - pad * 0.9
-    x1, y1 = size - pad, pad * 0.95
-    line_w = max(2, int(size * 0.045))
-    draw.line([(x0, y0), (x1, y1)], fill=ACCENT, width=line_w)
-    # Arrowhead
-    head = size * 0.13
-    draw.polygon([
-        (x1, y1),
-        (x1 - head, y1 + head * 0.35),
-        (x1 - head * 0.35, y1 + head),
-    ], fill=ACCENT)
-
-    # "BG" monogram lower-left
-    font = find_font(int(size * 0.34))
-    text = "BG"
-    bbox = draw.textbbox((0, 0), text, font=font)
+    # Om symbol, large and centered in the upper portion. Bottom-anchor so the
+    # full glyph (including the chandrabindu) always fits inside the canvas.
+    om_size = int(size * 0.58)
+    f_om = devanagari_font(om_size)
+    om = "ॐ"
+    bbox = draw.textbbox((0, 0), om, font=f_om)
     tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
-    tx = int(size * 0.10) - bbox[0]
-    ty = int(size - th - size * 0.10) - bbox[1]
-    draw.text((tx, ty), text, fill=FG, font=font)
+    tx = (size - tw) // 2 - bbox[0]
+    ty = int(size * 0.12) - bbox[1]
+    draw.text((tx, ty), om, fill=OM_COLOR, font=f_om)
+
+    # "GITA" wordmark below.
+    label_size = max(8, int(size * 0.18))
+    f_label = label_font(label_size)
+    label = "GITA"
+    bbox = draw.textbbox((0, 0), label, font=f_label)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    tx = (size - tw) // 2 - bbox[0]
+    ty = int(size * 0.76) - bbox[1]
+    draw.text((tx, ty), label, fill=LABEL_COLOR, font=f_label)
 
     return img
 
