@@ -91,7 +91,6 @@
       <div class="actions secondary-actions">
         <button type="button" class="btn" id="random">Random</button>
         <button type="button" class="btn" id="copy">Copy quote</button>
-        <a class="btn" id="tweet" target="_blank" rel="noopener">Share on X</a>
         <button type="button" class="btn" id="link">Copy link</button>
       </div>
 
@@ -117,7 +116,6 @@
       const btnRandom = document.getElementById("random");
       const btnCopy = document.getElementById("copy");
       const btnLink = document.getElementById("link");
-      const aTweet = document.getElementById("tweet");
 
       function stripPrefix(text, ref) {
         if (!text) return "";
@@ -137,9 +135,6 @@
         elSanskrit.textContent = v.sanskrit || "";
         elTranslit.textContent = v.transliteration || "";
         elCred.textContent = "Translator: " + (v.translator || "Shri Purohit Swami");
-        const url = SITE + "?v=" + encodeURIComponent(v.id);
-        const tweetText = "\"" + clean + "\" — Bhagavad Gita " + v.chapter + "." + v.verse;
-        aTweet.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweetText) + "&url=" + encodeURIComponent(url);
         history.replaceState(null, "", "?v=" + encodeURIComponent(v.id));
         document.title = "BG " + v.chapter + "." + v.verse + " | Bhagavad Gita Quotes";
         try { localStorage.setItem(STORAGE_KEY, v.id); } catch (e) {}
