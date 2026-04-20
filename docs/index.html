@@ -89,10 +89,16 @@
         <button type="button" class="btn primary" id="next">Next verse</button>
       </div>
       <div class="actions secondary-actions">
+        <button type="button" class="btn" id="daily">Verse of the day</button>
         <button type="button" class="btn" id="random">Random</button>
         <button type="button" class="btn" id="copy">Copy quote</button>
         <button type="button" class="btn" id="link">Copy link</button>
       </div>
+
+      <details class="chapter-browser">
+        <summary>Browse all 18 chapters</summary>
+        <ol class="chapter-list" id="chapter-list"></ol>
+      </details>
 
       <footer class="foot">
         <p>All 700 verses of the Bhagavad Gita in English. Free to quote. Translation by Shri Purohit Swami (1935, public domain). Source data from <a href="https://vedicscriptures.github.io/" target="_blank" rel="noopener">vedicscriptures.github.io</a>.</p>
@@ -103,6 +109,26 @@
     <script>
       const SITE = "https://chiragmirani.github.io/gita-quotes/";
       const STORAGE_KEY = "gita.lastVerseId";
+      const CHAPTERS = {
+        1:  "Arjuna's Despondency",
+        2:  "Transcendental Knowledge",
+        3:  "The Path of Action",
+        4:  "Knowledge and Renunciation",
+        5:  "Action in Renunciation",
+        6:  "Meditation",
+        7:  "Knowledge and Wisdom",
+        8:  "The Imperishable",
+        9:  "Royal Knowledge and Royal Secret",
+        10: "Divine Manifestations",
+        11: "The Universal Form",
+        12: "The Path of Devotion",
+        13: "Field and Knower of the Field",
+        14: "Three Modes of Nature",
+        15: "The Supreme Self",
+        16: "Divine and Demonic Natures",
+        17: "Three Divisions of Faith",
+        18: "Liberation by Renunciation"
+      };
       let verses = [];
       let currentIndex = 0;
 
@@ -116,6 +142,8 @@
       const btnRandom = document.getElementById("random");
       const btnCopy = document.getElementById("copy");
       const btnLink = document.getElementById("link");
+      const btnDaily = document.getElementById("daily");
+      const elChapterList = document.getElementById("chapter-list");
 
       function stripPrefix(text, ref) {
         if (!text) return "";
@@ -130,7 +158,8 @@
         const v = verses[currentIndex];
         const ref = "BG " + v.chapter + "." + v.verse;
         const clean = stripPrefix(v.english, v.id);
-        elRef.textContent = ref + "  ·  " + (currentIndex + 1) + " of " + verses.length;
+        const chapName = CHAPTERS[v.chapter] || "";
+        elRef.textContent = ref + "  ·  Ch. " + v.chapter + ": " + chapName;
         elQuote.textContent = clean;
         elSanskrit.textContent = v.sanskrit || "";
         elTranslit.textContent = v.transliteration || "";
@@ -150,9 +179,17 @@
         setTimeout(() => { btn.textContent = orig; }, 1400);
       }
 
+      function dailyVerseIndex() {
+        const today = new Date().toISOString().slice(0, 10);
+        let h = 0;
+        for (let i = 0; i < today.length; i++) h = ((h << 5) - h) + today.charCodeAt(i);
+        return Math.abs(h) % verses.length;
+      }
+
       btnNext.addEventListener("click", () => show(currentIndex + 1));
       btnPrev.addEventListener("click", () => show(currentIndex - 1));
       btnRandom.addEventListener("click", () => show(Math.floor(Math.random() * verses.length)));
+      btnDaily.addEventListener("click", () => show(dailyVerseIndex()));
       btnCopy.addEventListener("click", () => {
         const v = verses[currentIndex];
         const text = "\"" + stripPrefix(v.english, v.id) + "\" — Bhagavad Gita " + v.chapter + "." + v.verse;
@@ -171,10 +208,52 @@
         if (e.key === "ArrowLeft") { e.preventDefault(); show(currentIndex - 1); }
       });
 
+      // Swipe gestures: left = next verse, right = previous.
+      let touchStartX = null, touchStartY = null;
+      document.addEventListener("touchstart", (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      document.addEventListener("touchend", (e) => {
+        if (touchStartX === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          show(currentIndex + (dx < 0 ? 1 : -1));
+        }
+        touchStartX = touchStartY = null;
+      }, { passive: true });
+
+      // Build the chapter browser list once.
+      function buildChapterList() {
+        if (!elChapterList) return;
+        const firstByChapter = {};
+        verses.forEach((v, i) => {
+          if (!(v.chapter in firstByChapter)) firstByChapter[v.chapter] = i;
+        });
+        elChapterList.innerHTML = "";
+        Object.keys(CHAPTERS).forEach((ch) => {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = "#";
+          a.textContent = "Chapter " + ch + ". " + CHAPTERS[ch];
+          a.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            show(firstByChapter[ch]);
+            const browser = a.closest("details");
+            if (browser) browser.open = false;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+          li.appendChild(a);
+          elChapterList.appendChild(li);
+        });
+      }
+
       fetch("data.json")
         .then(r => r.json())
         .then(data => {
           verses = data.verses;
+          buildChapterList();
           const params = new URLSearchParams(window.location.search);
           const wantUrl = params.get("v");
           let saved = null;
@@ -193,6 +272,13 @@
         .catch(err => {
           elQuote.textContent = "Could not load verses: " + err;
         });
+
+      // Service worker for offline.
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {});
+        });
+      }
     </script>
   </body>
 </html>

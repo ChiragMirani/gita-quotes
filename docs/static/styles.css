@@ -213,6 +213,53 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .secondary-actions .btn { font-size: 15px; opacity: 0.85; }
 .secondary-actions .btn:hover { opacity: 1; }
 
+.chapter-browser {
+  max-width: 680px;
+  margin: 0 auto 40px;
+  padding: 24px 0;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+.chapter-browser summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--accent);
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.chapter-browser summary::-webkit-details-marker { display: none; }
+.chapter-browser summary::after {
+  content: "›";
+  display: inline-block;
+  transform: rotate(90deg);
+  transition: transform 0.2s ease;
+  font-size: 18px;
+  line-height: 0;
+}
+.chapter-browser[open] summary::after { transform: rotate(270deg); }
+.chapter-list {
+  list-style: none;
+  padding: 24px 0 0;
+  margin: 0;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+.chapter-list li { line-height: 1.5; }
+.chapter-list a {
+  display: block;
+  padding: 6px 0;
+  color: var(--text);
+  font-size: 15px;
+}
+.chapter-list a:hover { color: var(--accent); text-decoration: none; }
+@media (max-width: 640px) {
+  .chapter-list { grid-template-columns: 1fr; }
+}
+
 /* ---------- Footer ---------- */
 .foot {
   text-align: center;
