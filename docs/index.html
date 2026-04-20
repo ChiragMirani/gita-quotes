@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Bhagavad Gita Quotes by Chirag Mirani</title>
+    <meta name="description" content="A clean web app for reading and sharing all 700 verses of the Bhagavad Gita in English, with original Sanskrit and transliteration. Free to quote, public-domain translation. Built by Chirag Mirani.">
+    <meta name="author" content="Chirag Mirani">
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="keywords" content="bhagavad gita, gita quotes, bhagavad gita english, gita verses, krishna arjuna, hindu philosophy, gita app, gita quote of the day">
+    <link rel="canonical" href="https://chiragmirani.github.io/gita-quotes/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bhagavad Gita Quotes by Chirag Mirani">
+    <meta property="og:description" content="All 700 verses of the Bhagavad Gita in English, free to quote. Public-domain translation.">
+    <meta property="og:url" content="https://chiragmirani.github.io/gita-quotes/">
+    <meta property="og:site_name" content="Bhagavad Gita Quotes by CM">
+    <meta property="og:image" content="https://chiragmirani.github.io/gita-quotes/social-preview.png">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="640">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bhagavad Gita Quotes by Chirag Mirani">
+    <meta name="twitter:description" content="All 700 verses of the Bhagavad Gita in English, free to quote.">
+    <meta name="twitter:image" content="https://chiragmirani.github.io/gita-quotes/social-preview.png">
+    <meta name="twitter:creator" content="@chirag_mirani1">
+
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#1a1108">
+    <meta name="apple-mobile-web-app-title" content="GitaByCM">
+    <meta name="application-name" content="GitaByCM">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="static/styles.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://chiragmirani.github.io/gita-quotes/#website",
+          "url": "https://chiragmirani.github.io/gita-quotes/",
+          "name": "Bhagavad Gita Quotes by Chirag Mirani",
+          "description": "All 700 verses of the Bhagavad Gita in English, free to quote.",
+          "author": {"@type": "Person", "name": "Chirag Mirani"}
+        },
+        {
+          "@type": "Book",
+          "name": "Bhagavad Gita",
+          "alternateName": "Srimad Bhagavad Gita",
+          "inLanguage": ["sa", "en"],
+          "translator": {"@type": "Person", "name": "Shri Purohit Swami"},
+          "datePublished": "1935",
+          "license": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "url": "https://chiragmirani.github.io/gita-quotes/"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <main>
+      <header class="topbar">
+        <a class="brand" href="./">Gita Quotes</a>
+        <nav>
+          <a href="about.html">About</a>
+        </nav>
+      </header>
+
+      <section class="card" id="card">
+        <p class="ref" id="ref">Loading&hellip;</p>
+        <p class="quote" id="quote"></p>
+        <details class="extras">
+          <summary>Sanskrit and transliteration</summary>
+          <p class="sanskrit" id="sanskrit"></p>
+          <p class="translit" id="translit"></p>
+        </details>
+        <p class="cred" id="cred"></p>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="btn primary" id="next">New verse</button>
+        <button type="button" class="btn" id="copy">Copy quote</button>
+        <a class="btn" id="tweet" target="_blank" rel="noopener">Share on X</a>
+        <button type="button" class="btn" id="link">Copy link</button>
+      </div>
+
+      <footer class="foot">
+        <p>All 700 verses of the Bhagavad Gita in English. Free to quote. Translation by Shri Purohit Swami (1935, public domain). Source data from <a href="https://vedicscriptures.github.io/" target="_blank" rel="noopener">vedicscriptures.github.io</a>.</p>
+        <p class="muted">Built by Chirag Mirani. <a href="https://github.com/ChiragMirani/gita-quotes" target="_blank" rel="noopener">Source on GitHub</a>. Other work at <a href="https://chiragmirani.github.io/macro-dashboard/" target="_blank" rel="noopener">MacroForecastbyCM</a>.</p>
+      </footer>
+    </main>
+
+    <script>
+      const SITE = "https://chiragmirani.github.io/gita-quotes/";
+      let verses = [];
+      let current = null;
+
+      const elRef = document.getElementById("ref");
+      const elQuote = document.getElementById("quote");
+      const elSanskrit = document.getElementById("sanskrit");
+      const elTranslit = document.getElementById("translit");
+      const elCred = document.getElementById("cred");
+      const btnNext = document.getElementById("next");
+      const btnCopy = document.getElementById("copy");
+      const btnLink = document.getElementById("link");
+      const aTweet = document.getElementById("tweet");
+
+      function stripPrefix(text, ref) {
+        if (!text) return "";
+        const prefix = ref.replace("BG", "").trim();
+        const re = new RegExp("^\\s*" + prefix.replace(".", "\\.") + "\\s+");
+        return text.replace(re, "").trim();
+      }
+
+      function show(v) {
+        current = v;
+        const ref = "BG " + v.chapter + "." + v.verse;
+        const clean = stripPrefix(v.english, v.id);
+        elRef.textContent = ref;
+        elQuote.textContent = clean;
+        elSanskrit.textContent = v.sanskrit || "";
+        elTranslit.textContent = v.transliteration || "";
+        elCred.textContent = "Translator: " + (v.translator || "Shri Purohit Swami");
+        const url = SITE + "?v=" + encodeURIComponent(v.id);
+        const tweetText = "\"" + clean + "\" — Bhagavad Gita " + v.chapter + "." + v.verse;
+        aTweet.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweetText) + "&url=" + encodeURIComponent(url);
+        history.replaceState(null, "", "?v=" + encodeURIComponent(v.id));
+        document.title = "BG " + v.chapter + "." + v.verse + " | Bhagavad Gita Quotes";
+      }
+
+      function pickRandom() {
+        if (!verses.length) return null;
+        return verses[Math.floor(Math.random() * verses.length)];
+      }
+
+      function findById(id) {
+        return verses.find(v => v.id === id);
+      }
+
+      function flashButton(btn, label) {
+        const orig = btn.textContent;
+        btn.textContent = label;
+        setTimeout(() => { btn.textContent = orig; }, 1400);
+      }
+
+      btnNext.addEventListener("click", () => show(pickRandom()));
+      btnCopy.addEventListener("click", () => {
+        if (!current) return;
+        const text = "\"" + stripPrefix(current.english, current.id) + "\" — Bhagavad Gita " + current.chapter + "." + current.verse;
+        navigator.clipboard.writeText(text).then(() => flashButton(btnCopy, "Copied"));
+      });
+      btnLink.addEventListener("click", () => {
+        if (!current) return;
+        const url = SITE + "?v=" + encodeURIComponent(current.id);
+        navigator.clipboard.writeText(url).then(() => flashButton(btnLink, "Copied"));
+      });
+
+      fetch("data.json")
+        .then(r => r.json())
+        .then(data => {
+          verses = data.verses;
+          const params = new URLSearchParams(window.location.search);
+          const want = params.get("v");
+          show((want && findById(want)) || pickRandom());
+        })
+        .catch(err => {
+          elQuote.textContent = "Could not load verses: " + err;
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "Bhagavad Gita Quotes by CM",
+  "short_name": "GitaByCM",
+  "description": "All 700 verses of the Bhagavad Gita in English, free to quote. Public-domain translation.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6ee",
+  "theme_color": "#1a1108",
+  "icons": [
+    { "src": "favicon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

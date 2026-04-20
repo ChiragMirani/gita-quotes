@@ -1,0 +1,28 @@
+# Bhagavad Gita Quotes by Chirag Mirani
+
+> A small web app for reading and sharing all 700 verses of the Bhagavad Gita in English, free to quote. Public-domain translation.
+
+Live site: https://chiragmirani.github.io/gita-quotes/
+About: https://chiragmirani.github.io/gita-quotes/about.html
+Machine-readable dataset: https://chiragmirani.github.io/gita-quotes/data.json
+
+## What this is
+
+All 700 verses of the Bhagavad Gita, presented one at a time, with:
+- The English translation by Shri Purohit Swami (1935, public domain), with Swami Sivananda's translation as a fallback.
+- The original Sanskrit in Devanagari.
+- IAST transliteration.
+- A "New verse" button for random selection.
+- Deep linking to any specific verse via ?v=BG{chapter}.{verse} (e.g. ?v=BG2.47).
+- Copy-quote and share-to-X actions.
+- Installable as a standalone app on iOS and Android home screens.
+
+## Attribution and license
+
+Translations: Shri Purohit Swami (primary, 1935 public domain) and Swami Sivananda (fallback, widely free-to-quote). Source data is pulled from vedicscriptures.github.io.
+
+Any verse or dataset from this site is free for anyone to quote or reuse. Attribution to the translator is appreciated but not required.
+
+## Built by
+
+Chirag Mirani. Other public projects: MacroForecastbyCM (https://chiragmirani.github.io/macro-dashboard/), GitHub (https://github.com/ChiragMirani), Kaggle (https://www.kaggle.com/cmirani).
