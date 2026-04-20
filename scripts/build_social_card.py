@@ -53,10 +53,10 @@ def main() -> None:
     draw.text((ox, oy), om, fill=OM_COLOR, font=f_om)
 
     # Title block on the left.
-    title = "Bhagavad Gita"
-    line2 = "Quotes"
+    title = "The Bhagavad"
+    line2 = "Gita"
     sub   = "All 700 verses in English"
-    sub2  = "Free to quote. Public-domain translation."
+    sub2  = "Free to read and share. Public-domain translation."
     by    = "by Chirag Mirani"
 
     f_title = sans(96, bold=True)

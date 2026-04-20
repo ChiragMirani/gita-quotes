@@ -1,7 +1,7 @@
 {
-  "name": "Bhagavad Gita Quotes by CM",
-  "short_name": "GitaByCM",
-  "description": "All 700 verses of the Bhagavad Gita in English, free to quote. Public-domain translation.",
+  "name": "Gita — The Bhagavad Gita in English",
+  "short_name": "Gita",
+  "description": "The complete Bhagavad Gita, all 700 verses in English. Free to read, share, and reuse. Public-domain translation.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

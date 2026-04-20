@@ -3,24 +3,24 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Bhagavad Gita Quotes by Chirag Mirani</title>
-    <meta name="description" content="A clean web app for reading and sharing all 700 verses of the Bhagavad Gita in English, with original Sanskrit and transliteration. Free to quote, public-domain translation. Built by Chirag Mirani.">
+    <title>Gita — The Bhagavad Gita in English</title>
+    <meta name="description" content="The complete Bhagavad Gita, all 700 verses in English. The dialogue between Krishna and Arjuna on duty, action, and the self. Original Sanskrit, transliteration, and a clean public-domain English translation. Free to read, share, and reuse.">
     <meta name="author" content="Chirag Mirani">
     <meta name="robots" content="index,follow,max-image-preview:large">
-    <meta name="keywords" content="bhagavad gita, gita quotes, bhagavad gita english, gita verses, krishna arjuna, hindu philosophy, gita app, gita quote of the day">
+    <meta name="keywords" content="bhagavad gita, bhagavad gita english, gita verses, srimad bhagavad gita, krishna arjuna dialogue, hindu philosophy, gita online, read bhagavad gita">
     <link rel="canonical" href="https://chiragmirani.github.io/gita-quotes/">
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Bhagavad Gita Quotes by Chirag Mirani">
-    <meta property="og:description" content="All 700 verses of the Bhagavad Gita in English, free to quote. Public-domain translation.">
+    <meta property="og:type" content="book">
+    <meta property="og:title" content="The Bhagavad Gita in English">
+    <meta property="og:description" content="The complete Bhagavad Gita, all 700 verses in English. Free to read and share.">
     <meta property="og:url" content="https://chiragmirani.github.io/gita-quotes/">
-    <meta property="og:site_name" content="Bhagavad Gita Quotes by CM">
+    <meta property="og:site_name" content="The Bhagavad Gita">
     <meta property="og:image" content="https://chiragmirani.github.io/gita-quotes/social-preview.png">
     <meta property="og:image:width" content="1280">
     <meta property="og:image:height" content="640">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bhagavad Gita Quotes by Chirag Mirani">
-    <meta name="twitter:description" content="All 700 verses of the Bhagavad Gita in English, free to quote.">
+    <meta name="twitter:title" content="The Bhagavad Gita in English">
+    <meta name="twitter:description" content="The complete Bhagavad Gita, all 700 verses in English. Free to read and share.">
     <meta name="twitter:image" content="https://chiragmirani.github.io/gita-quotes/social-preview.png">
     <meta name="twitter:creator" content="@chirag_mirani1">
 
@@ -31,8 +31,8 @@
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-    <meta name="apple-mobile-web-app-title" content="GitaByCM">
-    <meta name="application-name" content="GitaByCM">
+    <meta name="apple-mobile-web-app-title" content="Gita">
+    <meta name="application-name" content="Gita">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -46,8 +46,9 @@
           "@type": "WebSite",
           "@id": "https://chiragmirani.github.io/gita-quotes/#website",
           "url": "https://chiragmirani.github.io/gita-quotes/",
-          "name": "Bhagavad Gita Quotes by Chirag Mirani",
-          "description": "All 700 verses of the Bhagavad Gita in English, free to quote.",
+          "name": "The Bhagavad Gita in English",
+          "alternateName": "Gita",
+          "description": "The complete Bhagavad Gita, all 700 verses in English. The dialogue between Krishna and Arjuna.",
           "author": {"@type": "Person", "name": "Chirag Mirani"}
         },
         {
@@ -67,7 +68,7 @@
   <body>
     <main>
       <header class="topbar">
-        <a class="brand" href="./">Gita Quotes</a>
+        <a class="brand" href="./">Gita</a>
         <nav>
           <a href="about.html">About</a>
         </nav>
@@ -93,7 +94,7 @@
         <button type="button" class="btn" id="last">Last verse</button>
         <button type="button" class="btn" id="daily">Verse of the day</button>
         <button type="button" class="btn" id="random">Random</button>
-        <button type="button" class="btn" id="copy">Copy quote</button>
+        <button type="button" class="btn" id="copy">Copy verse</button>
         <button type="button" class="btn" id="link">Copy link</button>
       </div>
 
@@ -103,7 +104,7 @@
       </details>
 
       <footer class="foot">
-        <p>All 700 verses of the Bhagavad Gita in English. Free to quote. Translation by Shri Purohit Swami (1935, public domain). Source data from <a href="https://vedicscriptures.github.io/" target="_blank" rel="noopener">vedicscriptures.github.io</a>.</p>
+        <p>The complete Bhagavad Gita, all 700 verses in English. Free to read, share, and reuse. Translation by Shri Purohit Swami (1935, public domain). Source data from <a href="https://vedicscriptures.github.io/" target="_blank" rel="noopener">vedicscriptures.github.io</a>.</p>
         <p class="muted">Built by Chirag Mirani. <a href="https://github.com/ChiragMirani/gita-quotes" target="_blank" rel="noopener">Source on GitHub</a>. Other work at <a href="https://chiragmirani.github.io/macro-dashboard/" target="_blank" rel="noopener">MacroForecastbyCM</a>.</p>
       </footer>
     </main>
@@ -198,7 +199,7 @@
       btnDaily.addEventListener("click", () => show(dailyVerseIndex()));
       btnCopy.addEventListener("click", () => {
         const v = verses[currentIndex];
-        const text = "\"" + stripPrefix(v.english, v.id) + "\" — Bhagavad Gita " + v.chapter + "." + v.verse;
+        const text = stripPrefix(v.english, v.id) + "\n\nBhagavad Gita " + v.chapter + "." + v.verse;
         navigator.clipboard.writeText(text).then(() => flashButton(btnCopy, "Copied"));
       });
       btnLink.addEventListener("click", () => {
