@@ -1,6 +1,6 @@
 {
-  "name": "Gita — The Bhagavad Gita in English",
-  "short_name": "Gita",
+  "name": "The Bhagavad Gita",
+  "short_name": "Bhagavad Gita",
   "description": "The complete Bhagavad Gita, all 700 verses in English. Free to read, share, and reuse. Public-domain translation.",
   "start_url": "./",
   "scope": "./",
