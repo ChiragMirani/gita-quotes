@@ -1,4 +1,4 @@
-# Gita
+# The Bhagavad Gita
 
 The complete Bhagavad Gita, all 700 verses in English. The dialogue between Krishna and Arjuna.
 
