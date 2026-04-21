@@ -57,18 +57,18 @@ def main() -> None:
     line2 = "Gita"
     sub   = "All 700 verses in English"
     sub2  = "Free to read and share. Public-domain translation."
-    by    = "by Chirag Mirani"
+    sub3  = "by Shri Purohit Swami (1935)"
 
     f_title = sans(96, bold=True)
     f_sub   = sans(36, bold=False)
     f_sub2  = sans(26, bold=False)
-    f_by    = sans(26, bold=True)
+    f_sub3  = sans(22, bold=False)
 
     draw.text((80, 110), title, fill=TITLE_COLOR, font=f_title)
     draw.text((80, 215), line2, fill=TITLE_COLOR, font=f_title)
     draw.text((80, 360), sub,   fill=TITLE_COLOR, font=f_sub)
     draw.text((80, 415), sub2,  fill=MUTED,       font=f_sub2)
-    draw.text((80, 480), by,    fill=OM_COLOR,    font=f_by)
+    draw.text((80, 460), sub3,  fill=MUTED,       font=f_sub3)
 
     img.save(OUT, optimize=True)
     print(f"Wrote {OUT}  ({W}x{H})")
