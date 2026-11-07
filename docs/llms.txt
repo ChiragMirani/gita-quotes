@@ -27,3 +27,6 @@ Any verse or the entire dataset from this site is free for anyone to read, share
 ## Built by
 
 Chirag Mirani. Other public projects: MacroForecastbyCM (https://chiragmirani.github.io/macro-dashboard/), GitHub (https://github.com/ChiragMirani), Kaggle (https://www.kaggle.com/cmirani).
+
+Readable chapter index: https://chiragmirani.github.io/gita-quotes/read/
+This source edition has 701 verse records, including 35 in chapter 13; numbering varies across editions.

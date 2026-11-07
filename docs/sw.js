@@ -2,7 +2,7 @@
 // Caches the static shell + verse data on install. Network-first for HTML so
 // updates land quickly; cache-first for assets and the data JSON.
 
-const CACHE = "gita-v2";
+const CACHE = "gita-v3";
 const SHELL = [
   "./",
   "./index.html",
@@ -26,7 +26,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      Promise.all(keys.filter((k) => k.startsWith("gita-") && k !== CACHE).map((k) => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });

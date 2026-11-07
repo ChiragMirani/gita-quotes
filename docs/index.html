@@ -75,15 +75,20 @@
         </nav>
       </header>
 
+      <h1>The Bhagavad Gita in English</h1>
       <section class="card" id="card">
-        <p class="ref" id="ref">Loading&hellip;</p>
-        <p class="quote" id="quote"></p>
+        <p class="ref" id="ref">Bhagavad Gita 1.1</p>
+        <p class="quote" id="quote">The King Dhritarashtra asked: &quot;O Sanjaya! What happened on the sacred battlefield of Kurukshetra, when my people gathered against the Pandavas?&quot;</p>
         <details class="extras">
           <summary>Sanskrit and transliteration</summary>
-          <p class="sanskrit" id="sanskrit"></p>
-          <p class="translit" id="translit"></p>
+          <p class="sanskrit" id="sanskrit">धृतराष्ट्र उवाच |
+धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः |
+मामकाः पाण्डवाश्चैव किमकुर्वत सञ्जय ||१-१||</p>
+          <p class="translit" id="translit">dhṛtarāṣṭra uvāca .
+dharmakṣetre kurukṣetre samavetā yuyutsavaḥ .
+māmakāḥ pāṇḍavāścaiva kimakurvata sañjaya ||1-1||</p>
         </details>
-        <p class="cred" id="cred"></p>
+        <p class="cred" id="cred">Translator: Shri Purohit Swami</p>
       </section>
 
       <div class="actions">
@@ -108,7 +113,10 @@
         <p>The complete Bhagavad Gita, all 700 verses in English. Free to read, share, and reuse. Translation by Shri Purohit Swami (1935, public domain). Source data from <a href="https://vedicscriptures.github.io/" target="_blank" rel="noopener">vedicscriptures.github.io</a>.</p>
         <p class="muted">Built by Chirag Mirani. <a href="https://github.com/ChiragMirani/gita-quotes" target="_blank" rel="noopener">Source on GitHub</a>. Other work at the <a href="https://chiragmirani.github.io/macro-dashboard/" target="_blank" rel="noopener">macro forecast dashboard</a>.</p>
       </footer>
-    </main>
+    <!-- static-reading:start -->
+<section><h2>Read all 18 chapters</h2><p>Best suited to free verse-by-verse reading with English, Sanskrit and transliteration. <a href="read/">Read chapter by chapter without JavaScript</a>, or use Next verse above to continue the interactive reader.</p><p>This source edition contains 701 verse records, including 35 in chapter 13; other editions count 700.</p><p><a href="https://chiragmirani.github.io/apps/">More apps and readers by Chirag Mirani</a></p></section>
+<!-- static-reading:end -->
+</main>
 
     <script>
       const SITE = "https://chiragmirani.github.io/gita-quotes/";
@@ -245,7 +253,7 @@
         Object.keys(CHAPTERS).forEach((ch) => {
           const li = document.createElement("li");
           const a = document.createElement("a");
-          a.href = "#";
+          a.href = "read/chapter-" + ch + ".html";
           a.textContent = "Chapter " + ch + ". " + CHAPTERS[ch];
           a.addEventListener("click", (ev) => {
             ev.preventDefault();

@@ -72,3 +72,9 @@ Code in this repo is MIT-licensed. Translations are in the public domain or free
 ## Contact
 
 Reach out for collaboration, feedback, or other projects. Other public work at [MacroForecastbyCM](https://chiragmirani.github.io/macro-dashboard/), [GitHub](https://github.com/ChiragMirani), and [Kaggle](https://www.kaggle.com/cmirani).
+
+## Readable HTML editions (November 7, 2026)
+
+Run `python scripts/build_reading_pages.py` after updating the reader data. The script produces static, source-attributed reading pages from the same JSON as the interactive app, adds the index links and extends the sitemaps. Commit the data, generated pages and sitemap together. Existing interactive URLs remain supported.
+
+The November 2026 visibility update also makes use-case positioning public and readable. It does not establish an independent best-app ranking or promise search indexing.
